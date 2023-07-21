@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/styles/product.css">
+    <title>home</title>
+</head>
+<body>
+    <%if(product.length==0){%>
+        <a href="/backtohome"><button type="submit" class="btn btn-info" id="gotocart">Back to Home</button></a>
+        <h1>Please Add Items to your cart to see them here</h1>
+    <%}else{%>
+        <div id="parent1">
+            <div id="parent">
+                <div  id="child1">
+                    <div id="para"></div>
+                    <button type="button" id="openclose" class="btn btn-primary">Close</button>
+                </div>
+               <div id="child2">
+                 <img src="" alt="img" height="200px" width="200px">
+               </div>
+               <div id="child3">
+                <p></p>
+               </div>
+               <div id="child4">
+                <p></p>
+               </div>
+            
+            </div>
+            </div>
+    <a href="/backtohome"><button type="submit" class="btn btn-info" id="gotocart">Back to Home</button></a>
+    <div id="main-second-container">
+        <div id="description"></div>
+        <% for(let i=0;i<product.length;i++){%>
+          
+        <div class="div-data-container" id=<%=product[i].productid%>>
+            <div class="div-img-container" id="<%=productquantity[0].userid%>">
+             <img src=<%=product[i].imgurl%> alt="image1">
+            </div>
+            <span>Quantity: </span>
+           <i class="bi bi-plus-square" onclick="plusitem('<%=product[i].productid%>','<%=product[i].quantity%>')" style="color:red;font-size: 20px;margin-left: 6%;"></i>
+            <i class="bi bi-dash-square" onclick="minusitem('<%=product[i].productid%>','<%=product[i].quantity%>')" style="color:black;font-size: 20px;margin-left: 2%;"></i>
+            <p class="product-name"><%=product[i].productname%></p>
+            <p class="product-price"><%=product[i].price%></p>
+            <a><button class="btn btn-primary" onclick="Delete('<%=product[i].productid%>','<%=productquantity[0].userid%>')" type="submit">Delete Item</button></a>
+            <button class="btn btn-primary" onclick="detailsHere('<%= product[i].productname %>', '<%= product[i].imgurl %>', '<%= product[i].price %>', '<%= product[i].productdetails %>')" type="button">View Desc</button>
+            <p id="id2">Keep on adding products</p>
+        </div>
+    <%}%>
+          
+    </div>
+    <%}%>
+
+    <script>
+   
+    
+         console.log('Inside to the desire ')
+         var localmail;
+         let length='<%=product.length%>';
+         console.log('Length of product array: ',length);
+   
+        // function for the intial values of quantity in the span tag
+        let allspan=document.getElementsByTagName('span');
+        console.log(allspan.length);
+        for(let i=0;i<allspan.length;i++)
+        {
+            console.log('1 here');
+            let email=allspan[i].previousElementSibling.id;
+            let idreq=allspan[i].parentNode.id;
+            Id={idreq,email};
+            console.log('Email in quantity')
+            console.log(Id.email);
+            let request=new XMLHttpRequest();
+            request.open('POST','/quantityinCart');
+            request.setRequestHeader("Content-Type", "application/json");
+            request.send(JSON.stringify(Id));
+            request.addEventListener('load',function(){
+                if(request.status===200)
+                {
+                    let datacame=JSON.parse(request.responseText);
+                    console.log(datacame);
+                    console.log('Data is successfully arrived in mycart.js');
+                    allspan[i].innerHTML=`Quantity: ${datacame[0].quantity}`;
+                }
+            })
+        }
+
+        // function for increasing the quantity of item in the cart
+        // let flag=false;
+        // let currentQuantity;
+        function plusitem(productid,totalQuantity)
+        {
+            // console.log(product);
+            // if(flag==false){
+            // currentQuantity=current;
+            // flag=true;
+            // }
+            
+            console.log("inside the increse item click")
+            console.log(productid,totalQuantity)
+            let reqData={
+                productid1:productid,
+                mail1:'<%=productquantity[0].userid %>'
+            }
+          console.log("plus item is clicked");
+          let request=new XMLHttpRequest();
+          request.open('POST','/increaseitemcheck');
+          request.setRequestHeader("Content-Type", "application/json");
+          request.send(JSON.stringify(reqData));
+          request.addEventListener('load',function(event){
+            if(request.status===200)
+            {
+                let usenumber;
+                if(request.responseText.length>0)
+                {
+                    console.log('successfuly came back after checking the quantity of product');
+                    console.log('printing the request.responseText below');
+                    console.log(request.responseText);
+                    let dataArrived=JSON.parse(request.responseText);
+                    if(dataArrived[0].quantity<totalQuantity)
+                    {
+                        console.log('Yes we can increase the item in our cart');
+                        usenumber=++dataArrived[0].quantity;
+                        let request1=new XMLHttpRequest();
+                        request1.open('POST','/increaseitem');
+                        request1.setRequestHeader("Content-Type","application/json");
+                        request1.send(JSON.stringify(reqData));
+                        request1.addEventListener('load',function(event){
+                            if(request1.status==200)
+                            {
+                                console.log('Successfully came back after increasing the quantity of the product in cart');
+                                let parent=document.getElementById(productid);
+                                parent.children[1].innerHTML=`<span>Quantity: ${usenumber}</span>`;
+                                parent.lastElementChild.innerHTML=`<p>Keep on adding products</P>`
+                            }
+                        })
+                    }
+                    else{
+                        console.log('No we cannot increase the item in our cart');
+                        let parent=document.getElementById(productid);
+                        parent.lastElementChild.innerHTML=`<p>Can not increase Quantity</P>`
+                    }
+                }
+                   
+            }
+            
+            
+          })
+        }
+
+
+
+        //  function for decreasing the quantity of item from the cart page
+
+        function minusitem(productid,totalQuantity)
+        {
+            // if(flag==false){
+            // currentQuantity=current;
+            // flag=true;
+            // }
+            console.log("inside the decrease item click")
+            console.log(productid,totalQuantity)
+            let reqData={
+                productid1:productid,
+                mail1:'<%=productquantity[0].userid %>'
+            }
+          console.log("plus item is clicked");
+          let request=new XMLHttpRequest();
+          request.open('POST','/decreaseitemcheck');
+          request.setRequestHeader("Content-Type", "application/json");
+          request.send(JSON.stringify(reqData));
+          request.addEventListener('load',function(event){
+            if(request.status===200)
+            {
+                let usenumber;
+                if(request.responseText.length>0)
+                {
+                    console.log('successfuly came back after checking the quantity of product');
+                    console.log('printing the request.responseText below');
+                    console.log(request.responseText);
+                    let dataArrived=JSON.parse(request.responseText);
+                    if(dataArrived[0].quantity>1)
+                    {
+                        console.log('Yes we can decrease the item in our cart');
+                        usenumber=--dataArrived[0].quantity;
+                        let request1=new XMLHttpRequest();
+                        request1.open('POST','/decreaseitem');
+                        request1.setRequestHeader("Content-Type","application/json");
+                        request1.send(JSON.stringify(reqData));
+                        request1.addEventListener('load',function(event){
+                            if(request1.status==200)
+                            {
+                                console.log('Successfully came back after decreasing the quantity of the product in cart');
+                                let parent=document.getElementById(productid);
+                                parent.children[1].innerHTML=`<span>Quantity: ${usenumber}</span>`;
+                                parent.lastElementChild.innerHTML=`<p>Keep on adding products</P>`
+                            }
+                        })
+                    }
+                    else{
+                        console.log('No we cannot decrease the item in our cart');
+                        let parent=document.getElementById(productid);
+                        parent.lastElementChild.innerHTML=`<p>Can not decrease Quantity</P>`
+                    }
+                }
+                   
+            }
+            
+            
+          })
+        }
+
+
+
+
+        // function for the delete the item from the cart
+           function Delete(id,mail){
+            let val={Id:id,email:mail};
+             console.log('Delete button is clicked');
+             console.log(val.email);
+              let request=new XMLHttpRequest();
+              request.open('POST','/deletecartitem');
+              request.setRequestHeader("Content-Type", "application/json");
+            request.send(JSON.stringify(val));
+            request.addEventListener('load',function(event){
+                if(request.status===200)
+                {
+                    console.log("successfully came back")
+                    console.log(request.responseText);
+                    let parent=document.getElementById(id);
+                    parent.remove();
+                }
+            })
+
+           }
+
+// function for showing the details
+function detailsHere(name,img,price,details)
+{
+    console.log('details button is clicked');
+    let ele88=document.getElementById('main-second-container');
+    ele88.style.display='none';
+    let ele=document.getElementById('parent1');
+    ele.children[0].style.display='block';
+    let ele1=document.getElementById('para');
+    ele1.innerHTML=`${name}`;
+    let ele2=document.getElementById('child2');
+    ele2.children[0].setAttribute('src',img);
+
+    let ele3=document.getElementById('child3');
+    ele3.children[0].innerHTML=`${price}`;
+
+    let ele4=document.getElementById('child4');
+    ele4.children[0].innerHTML=`${details}`;
+
+}
+let btnforclose=document.getElementById('openclose');
+btnforclose.addEventListener('click',function(){
+    let ele=document.getElementById('parent');
+    ele.style.display='none';
+    let ele77=document.getElementById('main-second-container');
+    ele77.style.display='flex';
+})
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    
+</body>
+</html>

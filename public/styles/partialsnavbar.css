@@ -1,0 +1,24 @@
+#main-container{
+    height: 8vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-image: linear-gradient(to bottom right, red, yellow);
+}
+
+#left-portion{
+    color: whitesmoke;
+    display: flex;
+    height: 100%;
+    width: 40%;
+}
+
+#right-portion{
+    height: 100%;
+    width:20%;
+}
+p{
+    margin-top: 9px;
+    margin-bottom: 1rem;
+    font-size: 18px;
+}

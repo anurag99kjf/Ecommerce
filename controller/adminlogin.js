@@ -1,0 +1,9 @@
+module.exports=function(req,res,next){
+    if(req.session.isAdmin===undefined)
+    {
+    res.render('adminlogin',{error:null});
+    }
+    else{
+        next();
+    }
+}

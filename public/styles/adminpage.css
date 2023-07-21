@@ -1,0 +1,129 @@
+/* CSS for the Product Form */
+
+body{
+   background-image: url('https://static.vecteezy.com/packs/media/photo/hero-800px-9fbe463f.jpg'); 
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+#main-second-container {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.8); /* Set a background color for the form area */
+  padding: 20px; /* Add some padding to separate the form from the background image */
+}
+
+.div-data-container {
+  border: 1px solid red;
+  height: 550px;
+  width: 400px;
+  margin-top: 1%;
+  border-radius: 4%;
+  box-shadow: 6px 1px 6px;
+  padding: 1%;
+  background-color: #daafafcf;
+}
+
+
+
+
+
+/* styling for the img-divs */
+.div-img-container{
+    height: 40%;
+    width: 100%;
+
+}
+img{
+    height: 100%;
+    width: 100%;
+}
+
+  h2 {
+    text-align: center;
+  }
+  
+  form {
+    width: 400px;
+    margin: 10px auto;
+    padding: 10px;
+    /* background-color: #ff7d00; */
+    box-shadow: 57px -10px 14px;
+    border-radius: 4%;
+
+  }
+  
+  label {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  textarea {
+    resize: vertical;
+    background-color: antiquewhite;
+    border-radius: 20px;
+  }
+  
+  input[type="file"] {
+    background-color: antiquewhite;
+    
+  }
+  
+  input[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: goldenrod;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+
+  #load-more{
+    /* margin-top: 45%; */
+    margin-left: 50%;
+
+}
+
+#gotocart{
+    position: fixed;
+    margin-top: 1%;
+    left: 92%;
+    z-index: 1;
+}
+
+
+/* for buttons */
+#main-second-container button{
+    margin-top: 0.5%;
+    width: 49%;
+}
+
+#logout-btn{
+  height: 100%;
+  position: relative;
+  left: 200%;
+}
+

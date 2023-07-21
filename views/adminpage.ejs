@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles/adminpage.css">
+    <title>Admin page</title>
+</head>
+<body>
+    
+    <%- include('partials/navbar', { user: { name: 'Admin' } }) %>
+    
+    <h2>Product Form</h2>
+    <form id="form-made" enctype="multipart/form-data">
+        <label for="product-name">Product Name:</label>
+        <input type="text" id="product-name" name="product-name" required><br>
+
+        <label for="product-price">Product Price:</label>
+        <input type="number" id="product-price" name="product-price" value="Price:" required><br>
+
+        <label for="product-description">Product Description:</label><br>
+        <textarea id="product-description" name="product-description" rows="4" cols="50" required></textarea><br><br>
+
+        <label for="product-quantity">Product Quantity:</label>
+        <input type="number" id="product-quantity" name="product-quantity" required><br><br>
+
+        <label for="product-image">Product Image:</label>
+        <input type="file" id="product-image" name="product-image" required><br>
+        <input type="submit" value="Submit">
+        <!-- <input type="submit" id="form-btn"  value="Submit"> -->
+    </form>
+   
+
+    <div id="main-second-container">
+        <% let totallength = product.length %>
+        <% for(let i = 0; i < product.length; i++) { %>
+            <div class="div-data-container" id='<%= product[i].productid %>'>
+                <div class="div-img-container">
+                    <img src="<%= product[i].imgurl %>" alt="image1">
+                </div>
+                <label for="<%= product[i].productname %>">Product name:</label>
+                <input type="text" id="<%= product[i].productname %>" value="<%= product[i].productname %>"  required><br>
+                <label for="<%= product[i].productdetails %>">Product details:</label>
+                <input type="text" id="<%= product[i].productdetails %>" value="<%= product[i].productdetails %>" required><br>
+                <label for="<%= product[i].price %>">Product price:</label>
+                <input type="text" id="<%= product[i].price %>" value="<%= product[i].price %>" required><br>
+                <label for="<%= product[i].quantity %>">Product quantity:</label>
+                <input type="number" id="<%= product[i].quantity %>" value="<%= product[i].quantity %>" required><br>
+                <button type="button" class="btn btn-primary btn-update" onclick="updateItem('<%= product[i].productid %>')">Update</button>
+                <button type="button" class="btn btn-danger btn-delete" onclick="deleteitem('<%= product[i].productid %>')">Delete</button>
+            </div>
+        <% } %>
+    </div>
+    
+     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <script>
+
+         // handling the click event on change password
+    let passele=document.getElementById('changepass');
+    passele.style.display='none';
+        // handling click event on the update button
+        let flag=true;
+        // let updateButton=document.getElementsByClassName('btn-update');
+        // for(let i=0;i<updateButton.length;i++)
+        // {
+        //     updateButton[i].addEventListener('click',function(event){
+
+            function updateItem(ID)
+            {
+                let requiredata={};
+                let parent=document.getElementById(ID);
+                requiredata.id=parent.id;
+                requiredata.productname=parent.children[2].value;
+                requiredata.productdetails=parent.children[5].value;
+                requiredata.productprice=parent.children[8].value;
+                requiredata.productquantity=parent.children[11].value;
+                console.log(requiredata);
+                const values = Object.values(requiredata);
+                for (let value of values) {
+                  console.log(value);
+                  if(value=='')
+                  {
+                    flag=false;
+                    alert('Kindly fill all the fields')
+                    break;
+                  }
+                }
+                if(flag==false)
+                {
+                    flag=true;
+                }
+                else{
+                    alert('Product is updated Successfully')
+                    requiredata.productprice=parseInt(requiredata.productprice);
+                    requiredata.productquantity=parseInt(requiredata.productquantity);
+                    requiredata.id=parseInt(requiredata.id);
+                    console.log('Consolling the values of requiredata after changing the productquantity to integer');
+                    console.log(requiredata);
+                    let request=new XMLHttpRequest();
+                    request.open('POST','/updateproduct');
+                    request.setRequestHeader('Content-Type', 'application/json');
+                    request.send(JSON.stringify(requiredata));
+                    request.addEventListener('load',function(){
+
+                    
+                    if(request.status===200)
+                    {
+                        console.log('Successfully updated the data from the admin');
+                        
+                    }
+
+                })
+                }
+            }
+
+        //     })
+        // }
+
+        // handling delete button for deleting the product when admin click on it
+        // let deleteButton=document.getElementsByClassName('btn-delete');
+        // for(let i=0;i<deleteButton.length;i++)
+        // {
+        //     deleteButton[i].addEventListener('click',function(event){
+
+                function deleteitem(ID)
+                {
+                console.log('consoling the type of ID: ',typeof(ID))
+                let requiredata={};
+                // let parent=deleteButton[i].parentNode;
+                requiredata.id=ID;
+                console.log('Delete button is clicked')
+                alert('Product is deleted Successfully');
+                    
+                    requiredata.id=parseInt(requiredata.id);
+                    
+                    console.log(requiredata);
+                    let request=new XMLHttpRequest();
+                    request.open('POST','/deletebyadmin');
+                    request.setRequestHeader('Content-Type', 'application/json');
+                    request.send(JSON.stringify(requiredata));
+                    request.addEventListener('load',function(){
+                    if(request.status===200)
+                    {
+                        console.log('Successfully deleted the data by the admin');
+                        console.log('Removing the targeted element');
+                        let ele5=document.getElementById(ID);
+                        ele5.style.display='none';
+                        ele5.remove();
+                        
+                    }
+                }) 
+            }
+
+        //     })
+        // }
+
+    //  writing script for the form data
+    let formBtn=document.getElementById('form-made');
+    formBtn.addEventListener('submit',function(event){
+        event.preventDefault();
+        let formdata=new FormData();
+        let name=document.getElementById('product-name');
+        let price=document.getElementById('product-price');
+        let details=document.getElementById('product-description');
+        let quantity=document.getElementById('product-quantity');
+        let image=document.getElementById('product-image');
+        if(name.value.trim()!=='' && price.value>0 && details.value.trim()!=='' && quantity.value>0 && image.files[0])
+        {
+            formdata.append('productname',name.value);
+            formdata.append('productprice',price.value);
+            formdata.append('productdetails',details.value);
+            formdata.append('productquantity',quantity.value);
+            formdata.append('productimage',image.files[0]);
+            console.log('Inside the not null part of the form');
+            console.log('value of formdata',name.value,price.value,details.value,quantity.value,image.files[0]);
+            
+            let request=new XMLHttpRequest();
+            request.open('POST','/saveadminform');
+            
+            request.send(formdata);
+            request.addEventListener('load',function(){
+                if(request.status===200)
+                {
+                    alert('Successfully added the item');
+                    console.log('Successfully coming from sending the from data');
+                    console.log(request.responseText);
+                    let data=JSON.parse(request.responseText);
+                    console.log(data);
+                    let parent=document.getElementById('main-second-container');
+                    parent.innerHTML+=`<div class="div-data-container" id='${data[0].productid}'>
+                <div class="div-img-container">
+                    <img src=${data[0].imgurl} alt="image1">
+                </div>
+                <label for=${data[0].productname}>Product name:</label>
+                <input type="text" id=${data[0].productname} value=${data[0].productname}  required><br>
+                <label for=${data[0].productdetails}>Product details:</label>
+                <input type="text" id=${data[0].productdetails} value=${data[0].productdetails} required><br>
+                <label for="${data[0].price}">Product price:</label>
+                <input type="text" id="${data[0].price}" value="${data[0].price}" required><br>
+                <label for="${data[0].quantity}">Product quantity:</label>
+                <input type="number" id="${data[0].quantity}" value="${data[0].quantity}" required><br>
+                <button type="button" class="btn btn-primary btn-update" onclick="updateItem('${data[0].productid}')">Update</button>
+                <button type="button" class="btn btn-danger btn-delete" onclick="deleteitem('${data[0].productid}')">Delete</button>
+            </div>`
+                }
+            })
+
+            name.value='';
+            price.value='';
+            details.value='';
+            quantity.value='';
+            image.value='';
+        }
+
+    })
+
+    // writing functionality for the logout button
+    let logout=document.getElementById('logout-btn');
+    logout.addEventListener('click',function(){
+        let request=new XMLHttpRequest();
+        request.open('GET','/logoutadmin');
+        request.send();
+        request.addEventListener('load',function(){
+            if(request.status===200)
+            {
+                let passele=document.getElementById('changepass');
+                passele.style.display='block';
+                console.log('Admin in successfully loggedout');
+                window.location.assign('http://127.0.0.1:8000/adminlogin')
+            }
+        })
+    })
+
+
+   
+    </script>
+</body>
+</html>

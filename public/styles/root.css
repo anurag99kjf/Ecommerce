@@ -1,0 +1,131 @@
+/* Form container */
+body{
+  /* background-color: #ffca0069; */
+  /* background-image: url('https://images.pexels.com/photos/863963/pexels-photo-863963.jpeg?cs=srgb&dl=pexels-blaque-x-863963.jpg&fm=jpg'); */
+  background-image: url("https://www.searchenginejournal.com/wp-content/uploads/2020/12/ecommerce-mcommerce-featured-image-5fd09a3a5ff2a.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+.form-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 40px;
+  border-radius: 15px;
+  /* background-color: #fff; */
+  background-image: linear-gradient(to right,orange, white);
+  box-shadow: 30px 40px 6px rgba(7, 16, 0, 0.5);
+  }
+  
+  /* Form header */
+  .form-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .form-header h2 {
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 0;
+  }
+  
+  /* Form input fields */
+  .form-input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  /* Form submit button */
+  .form-submit {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: darkorange;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .form-submit:hover {
+    background-color: darkorange;
+  }
+  
+  /* forgot password */
+  #forgotpassword{
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    width: 96%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: darkorange;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1%;
+  }
+
+  #forgotpassword:hover{
+    background-color: darkorange;
+  }
+
+  #loginasadmin
+  {
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    width: 96%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: darkorange;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1%;
+  }
+  #loginasadmin:hover{
+    background-color:darkorange;
+  }
+
+  /* Form switch links */
+  .form-switch {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  .form-switch a {
+    color: darkorange;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
+  .form-switch a:hover {
+    text-decoration: underline;
+  }
+
+  .error{
+    background-color: darkorange;
+    text-align: center;
+    color: white;
+    border-radius: 20px;
+    width: 39%;
+    margin: auto;
+  }
+  

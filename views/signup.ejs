@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Login/Signup Page</title>
+    <link rel="stylesheet" href="/styles/root.css">
+  </head>
+  <body>
+    <div class="form-container">
+      <div class="form-header">
+        <h2>Signup</h2>
+      </div>
+      <form method="post" action="/signup">
+        <input type="text"  class="form-input" name="name" placeholder="Name" required>
+        <input type="text" class="form-input" placeholder="Username" required name="username">
+        <input type="email" class="form-input" placeholder="Email" required name="email">
+        <input type="password" class="form-input" placeholder="Password" required name="password">
+        <input type="number"  class="form-input" placeholder="+91 XXXXXXXXXX" name="mobile" required>
+        <button type="submit"   class="form-submit">Signup</button>
+      </form>
+      <div class="form-switch">
+        <a href="/login">Already have an account? Log in</a>
+      </div>
+      <%if(error){%>
+      <div class="error">
+        <%= error %>
+      </div>
+      <%}%>
+    </div>
+  </body>
+</html>
